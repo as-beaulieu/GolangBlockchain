@@ -1,1 +1,3 @@
-module "GolangBlockchain"
+module GolangBlockchain
+
+go 1.15
