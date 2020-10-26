@@ -12,6 +12,10 @@ Proof of Work
 
 Adding CLI
 
+`go run main.go print`
+
+`go run main.go add -block "block data"`
+
 Serializing/Deserializing data into []byte
 
 Persistent blockchain with BadgerDB
