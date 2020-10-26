@@ -19,3 +19,7 @@ Adding CLI
 Serializing/Deserializing data into []byte
 
 Persistent blockchain with BadgerDB
+
+# Part 4
+
+Basic Transactions
