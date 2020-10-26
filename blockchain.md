@@ -36,6 +36,8 @@ func (b *Block) DeriveHash() {
 **Note:** SHA256 is a rather simple way to derive the hash instead of the real way, which is perfect for
 this demonstration
 
+This simple implementation is replaced by the *Proof of Work* algorithm
+
 ## Adding blocks
 
 Adding blocks work by creating a new block, 
@@ -97,9 +99,64 @@ hash: ec19d50693a7c6ace4b8a31eabd49d1636d7b7dfe4376bfc194adfdf1408e8b4
 
 # Features
 
-Wallets
+## Consensus Algorithm
 
-Merkel Tree
+Also known as "Proof Of" algorithms
 
-Consensus Algorithm
+### Proof of Work
+
+We want to secure our blockchain by making the server do computational work to add the next block
+
+Called *mining* - running the Proof Of Work algorithm, 
+powering the system, adding the next block and making the blockchain more secure,
+and getting rewarded for their work
+
+But once a miner signs a block, they need to show proof that they performed this work
+
+*Work must be hard to do, but proving it should be relatively easy*
+
+#### Requirements
+
+- `The first few bytes must contain 0s`
+
+For Bitcoin original proof of work specifications (HashCash), 
+difficulty was **20** consecutive bits of the hash as zeroes
+
+- `The difficulty changes over time`
+
+Difficulty goes up, meaning more 0s in front to be valid
+
+To account for increasing amount of miners, and the increasing
+computational power of computers doing the mining. 
+
+Want the relative time to compute a block stay the same over time,
+as well as the creation rate of blocks stay the same
+
+```
+Difficulty = 12
+
+func NewProof(b *Block) *ProofOfWork {
+	target := big.NewInt(1)
+	target.Lsh(target, uint(256-Difficulty))
+
+	pow := &ProofOfWork{b, target}
+
+	return pow
+}
+```
+
+raising the difficulty scales quickly
+
+- Difficulty 12 takes ~241 ms to run 4 sha256 hashes
+- Difficulty 15 takes ~1.25 seconds
+- Difficulty 18 takes ~12 seconds
+- Difficulty 21 takes ~1 minute 24 seconds
+
+### Proof of Stake
+
+## Wallets
+
+## Merkel Tree
+
+
 
