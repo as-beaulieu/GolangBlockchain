@@ -20,7 +20,7 @@ import (
 // Repeat this until meets requirements
 
 const (
-	Difficulty = 21
+	Difficulty = 12
 )
 
 type ProofOfWork struct {

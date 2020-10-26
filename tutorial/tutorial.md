@@ -7,3 +7,11 @@ Basic blockchain concepts and setup
 Separated Blockchain logic into separate module
 
 Proof of Work
+
+# Part 3
+
+Adding CLI
+
+Serializing/Deserializing data into []byte
+
+Persistent blockchain with BadgerDB
