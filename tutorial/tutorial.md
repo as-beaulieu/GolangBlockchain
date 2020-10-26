@@ -7,3 +7,15 @@ Basic blockchain concepts and setup
 Separated Blockchain logic into separate module
 
 Proof of Work
+
+# Part 3
+
+Adding CLI
+
+`go run main.go print`
+
+`go run main.go add -block "block data"`
+
+Serializing/Deserializing data into []byte
+
+Persistent blockchain with BadgerDB

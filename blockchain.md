@@ -154,6 +154,37 @@ raising the difficulty scales quickly
 
 ### Proof of Stake
 
+## Persistence (Database)
+
+Original specifications for bitcoin didn't call for a specific database
+
+-Bitcoin and other cryptocurrencies use LevelDB
+
+    -LevelDB is a low level key-value store database
+    
+- Bitcoin core specification: Two main groups of data
+    
+    - Blocks object
+        
+        - Stored with Metadata which describes all blocks on the chain
+        
+    - Chain State object
+        
+        - Stores the state of a chain and all current unspent transaction outputs, with some metadata
+            
+    - Bitcoin specifications has each block be it's own separate file on the DB
+    
+        - For Performance: With each on it's own file, don't have to open up multiple
+        blocks just to read one
+
+Using BadgerDB for tutorial blockchain
+
+### BadgerDB
+
+Native Golang, Key-Value storage database based off of LevelDB
+
+Only accepts slices of bytes - `[]byte`
+
 ## Wallets
 
 ## Merkel Tree
