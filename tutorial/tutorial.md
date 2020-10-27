@@ -23,3 +23,16 @@ Persistent blockchain with BadgerDB
 # Part 4
 
 Basic Transactions
+
+New CLI commands
+
+`go run main.go createblockchain -address "john"`
+
+`go run main.go printchain`
+
+`go run main.go getbalance -address "john"`
+
+`go run main.go send -from "john" -to "fred" -amount 50`
+
+`go run main.go getbalance -address "fred"`
+
