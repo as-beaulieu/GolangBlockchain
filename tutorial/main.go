@@ -11,14 +11,14 @@ import (
 	"time"
 )
 
-type CommandLine struct {
-	blockchain *blockchain.BlockChain
-}
+type CommandLine struct{}
 
 func (cli *CommandLine) printUsage() {
 	fmt.Println("Usage:")
-	fmt.Println("add -block BLOCK_DATA :: add a block to the chain")
 	fmt.Println("print :: prints the blocks in the blockchain")
+	fmt.Println("getbalance -address ADDRESS :: get the balance for the address")
+	fmt.Println("createblockchain -address ADDRESS :: creates a blockchain for the address")
+	fmt.Println("send -from FROM -to TO -amount AMOUNT :: send amount from address to another address")
 }
 
 func (cli *CommandLine) validateArgs() {
@@ -28,21 +28,16 @@ func (cli *CommandLine) validateArgs() {
 	}
 }
 
-func (cli *CommandLine) addBlock(data string) {
-	cli.blockchain.AddBlock(data)
-	fmt.Println("Added Block!")
-}
-
 func (cli *CommandLine) printChain() {
-	iterator := cli.blockchain.Iterator()
+	chain := blockchain.ContinueBlockChain("")
+	defer chain.Database.Close()
+	iterator := chain.Iterator()
 
 	for {
 		block := iterator.Next()
 
 		fmt.Printf("previous hash: %x\n", block.PrevHash)
-		fmt.Printf("data in block: %s\n", block.Data)
-		fmt.Printf("hash: %x\n", block.Hash)
-
+		fmt.Printf("data in block: %x\n", block.Hash)
 		pow := blockchain.NewProof(block)
 		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
 		fmt.Println()
@@ -51,7 +46,26 @@ func (cli *CommandLine) printChain() {
 			break
 		}
 	}
+}
 
+func (cli *CommandLine) createBlockChain(address string) {
+	chain := blockchain.InitializeBlockChain(address)
+	chain.Database.Close()
+	fmt.Println("finished")
+}
+
+func (cli *CommandLine) getBalance(address string) {
+	chain := blockchain.ContinueBlockChain(address)
+	defer chain.Database.Close()
+
+	balance := 0
+	UTXOs := chain.FindUnspentTransactionOutputs(address)
+
+	for _, out := range UTXOs {
+		balance += out.Value
+	}
+
+	fmt.Printf("Balance of %s: %d\n", address, balance)
 }
 
 func (cli *CommandLine) run() {
