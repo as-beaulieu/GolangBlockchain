@@ -185,6 +185,25 @@ Native Golang, Key-Value storage database based off of LevelDB
 
 Only accepts slices of bytes - `[]byte`
 
+## Transactions
+
+Inputs and Outputs
+
+Because blockchains are public, there are no sensitive data in the block's data
+
+All of the sensitive data are done through inputs and outputs
+
+In Bitcoin, PubKey is derived from scripting language ("script")
+
+### First transaction - Genesis (Coinbase)
+
+The first transaction is the creation of the genesis block - 
+known as the *Coinbase* transaction
+
+- only one input and one output
+
+- has a reward attached to it - given to the miner that has processed it
+
 ## Wallets
 
 ## Merkel Tree
