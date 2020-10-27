@@ -36,3 +36,9 @@ New CLI commands
 
 `go run main.go getbalance -address "fred"`
 
+# Part 5
+
+Adding wallet module
+
+Refactoring CLI logic to be separate from main
+
