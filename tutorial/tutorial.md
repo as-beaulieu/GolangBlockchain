@@ -42,3 +42,5 @@ Adding wallet module
 
 Refactoring CLI logic to be separate from main
 
+Setting persistence for wallets - BadgerDB exclusively for blocks
+

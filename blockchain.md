@@ -255,6 +255,13 @@ A wallet is made up of 2 keys: Private and Public Keys
                                     [address]
 ```
 
+*Base 58* was invented with bitcoin, derivative of base 64 algorithm
+
+- Characters missing from Base 58:  `0 O l I + /`
+
+    - they are easily confused with one another, 
+    helps with human readability when one user gives their key to someone else
+
 ## Merkel Tree
 
 
