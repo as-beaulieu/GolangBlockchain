@@ -206,6 +206,62 @@ known as the *Coinbase* transaction
 
 ## Wallets
 
+A wallet is made up of 2 keys: Private and Public Keys
+
+- The *Private* key is the identifier for each of the accounts in the blockchain
+
+    - This means that each private key must be globally unique
+    
+    - Using **Elliptical Curve Digital Signing Algorithm** (ecdsa)
+    
+- The Public key is given to other users, and derives the address used to send and receive data in the chain
+
+```
+                            [Private Key] 
+                                 |
+                                 V
+                               [ecdsa] 
+                                |
+                                V
+                            [public key]
+                                   |
+                                   V 
+                             [sha 256]    
+                                    |
+                                    V 
+                                [ripemd160]
+                                    |
+                                    V      
+                              [public key hash]
+                              /       \
+                             /         \ 
+                      [sha 256]         |
+                          |             |
+                          V             |
+                      [sha 256]         |
+                          |             |
+                          V             |
+                  [1st 4 bytes]         |
+                          |             |
+                          V             |
+                      [Checksum]        |       [version]
+                               \        |       /
+                                \       |      /
+                                 \      |     /
+                                  \     |    /
+                                   [ Base 58 ]
+                                        |
+                                        V
+                                    [address]
+```
+
+*Base 58* was invented with bitcoin, derivative of base 64 algorithm
+
+- Characters missing from Base 58:  `0 O l I + /`
+
+    - they are easily confused with one another, 
+    helps with human readability when one user gives their key to someone else
+
 ## Merkel Tree
 
 

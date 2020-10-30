@@ -36,3 +36,15 @@ New CLI commands
 
 `go run main.go getbalance -address "fred"`
 
+# Part 5
+
+Adding wallet module
+
+Refactoring CLI logic to be separate from main
+
+Setting persistence for wallets - BadgerDB exclusively for blocks
+
+`go run main.go createwallet`
+
+`go run main.go listaddresses`
+
