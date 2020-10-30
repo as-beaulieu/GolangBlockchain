@@ -2,6 +2,7 @@ package cli
 
 import (
 	"GolangBlockchain/tutorial/blockchain"
+	"GolangBlockchain/tutorial/wallet"
 	"flag"
 	"fmt"
 	"log"
@@ -18,6 +19,8 @@ func (cli *CommandLine) printUsage() {
 	fmt.Println("getbalance -address ADDRESS :: get the balance for the address")
 	fmt.Println("createblockchain -address ADDRESS :: creates a blockchain for the address")
 	fmt.Println("send -from FROM -to TO -amount AMOUNT :: send amount from address to another address")
+	fmt.Println("createwallet :: Creates a new wallet")
+	fmt.Println("listaddresses :: Lists the addresses in our wallet file")
 }
 
 func (cli *CommandLine) validateArgs() {
@@ -25,6 +28,23 @@ func (cli *CommandLine) validateArgs() {
 		cli.printUsage()
 		runtime.Goexit() //exits the application by shutting down the goroutines
 	}
+}
+
+func (cli *CommandLine) listAddresses() {
+	wallets, _ := wallet.CreateWallets()
+	addresses := wallets.GetAllAddresses()
+
+	for _, address := range addresses {
+		fmt.Println(address)
+	}
+}
+
+func (cli *CommandLine) createWallet() {
+	wallets, _ := wallet.CreateWallets()
+	address := wallets.AddWallet()
+	wallets.SaveFile()
+
+	fmt.Printf("New address is: %s\n", address)
 }
 
 func (cli *CommandLine) printChain() {
@@ -83,6 +103,8 @@ func (cli *CommandLine) Run() {
 	createBlockchainCmd := flag.NewFlagSet("createblockchain", flag.ExitOnError)
 	sendCmd := flag.NewFlagSet("send", flag.ExitOnError)
 	printChainCmd := flag.NewFlagSet("print", flag.ExitOnError)
+	createWalletCmd := flag.NewFlagSet("createwallet", flag.ExitOnError)
+	listAddressesCmd := flag.NewFlagSet("listaddresses", flag.ExitOnError)
 
 	getBalanceAddress := getBalaceCmd.String("address", "", "The address to get the balance from")
 	createBlockChainAddress := createBlockchainCmd.String("address", "", "The address to create the blockchain for")
@@ -101,6 +123,14 @@ func (cli *CommandLine) Run() {
 		}
 	case "send":
 		if err := sendCmd.Parse(os.Args[2:]); err != nil {
+			log.Panic(err)
+		}
+	case "listaddresses":
+		if err := listAddressesCmd.Parse(os.Args[2:]); err != nil {
+			log.Panic(err)
+		}
+	case "createwallet":
+		if err := createWalletCmd.Parse(os.Args[2:]); err != nil {
 			log.Panic(err)
 		}
 	case "printchain":
@@ -142,6 +172,14 @@ func (cli *CommandLine) Run() {
 			runtime.Goexit()
 		}
 		cli.send(*sendFrom, *sendTo, *sendAmount)
+	}
+
+	if createWalletCmd.Parsed() {
+		cli.createWallet()
+	}
+
+	if listAddressesCmd.Parsed() {
+		cli.listAddresses()
 	}
 
 	if printChainCmd.Parsed() {

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"GolangBlockchain/tutorial/wallet"
+	"GolangBlockchain/tutorial/cli"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -16,10 +17,7 @@ func main() {
 }
 
 func Run() {
-	//defer os.Exit(0)
-	//command := cli.CommandLine{}
-	//command.Run()
-
-	w := wallet.MakeWallet()
-	w.Address()
+	defer os.Exit(0)
+	command := cli.CommandLine{}
+	command.Run()
 }
