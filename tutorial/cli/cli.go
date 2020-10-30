@@ -11,6 +11,10 @@ import (
 	"strconv"
 )
 
+const (
+	ERROR_INVALID_ADDRESS = "Address is not valid"
+)
+
 type CommandLine struct{}
 
 func (cli *CommandLine) printUsage() {
@@ -59,6 +63,9 @@ func (cli *CommandLine) printChain() {
 		fmt.Printf("data in block: %x\n", block.Hash)
 		pow := blockchain.NewProof(block)
 		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
+		for _, tx := range block.Transactions {
+			fmt.Println(tx)
+		}
 		fmt.Println()
 
 		if len(block.PrevHash) == 0 {
@@ -68,17 +75,25 @@ func (cli *CommandLine) printChain() {
 }
 
 func (cli *CommandLine) createBlockChain(address string) {
+	if !wallet.ValidateAddress(address) {
+		log.Panic(ERROR_INVALID_ADDRESS)
+	}
 	chain := blockchain.InitializeBlockChain(address)
 	chain.Database.Close()
 	fmt.Println("finished")
 }
 
 func (cli *CommandLine) getBalance(address string) {
+	if !wallet.ValidateAddress(address) {
+		log.Panic(ERROR_INVALID_ADDRESS)
+	}
 	chain := blockchain.ContinueBlockChain(address)
 	defer chain.Database.Close()
 
 	balance := 0
-	UTXOs := chain.FindUnspentTransactionOutputs(address)
+	pubKeyHash := wallet.Base58Decode([]byte(address))
+	pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
+	UTXOs := chain.FindUnspentTransactionOutputs(pubKeyHash)
 
 	for _, out := range UTXOs {
 		balance += out.Value
@@ -88,6 +103,9 @@ func (cli *CommandLine) getBalance(address string) {
 }
 
 func (cli *CommandLine) send(from, to string, amount int) {
+	if !wallet.ValidateAddress(to) || !wallet.ValidateAddress(from) {
+		log.Panic(ERROR_INVALID_ADDRESS)
+	}
 	chain := blockchain.ContinueBlockChain(from)
 	defer chain.Database.Close()
 
