@@ -3,11 +3,17 @@ package blockchain
 import (
 	"GolangBlockchain/tutorial/wallet"
 	"bytes"
+	"encoding/gob"
+	"log"
 )
 
 type TxOutput struct {
 	Value      int
 	PubKeyHash []byte
+}
+
+type TxOutputs struct {
+	Outputs []TxOutput
 }
 
 type TxInput struct {
@@ -37,4 +43,22 @@ func NewTxOutput(value int, address string) *TxOutput {
 	txo.Lock([]byte(address))
 
 	return txo
+}
+
+func (outs TxOutputs) Serialize() []byte {
+	var buffer bytes.Buffer
+	encode := gob.NewEncoder(&buffer)
+	if err := encode.Encode(outs); err != nil {
+		log.Panic(err)
+	}
+	return buffer.Bytes()
+}
+
+func DeserializeOutputs(data []byte) TxOutputs {
+	var outputs TxOutputs
+	decode := gob.NewDecoder(bytes.NewReader(data))
+	if err := decode.Decode(&outputs); err != nil {
+		log.Panic(err)
+	}
+	return outputs
 }
