@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	ERROR_PREVIOUS_TRANSACTION_NOT_EXIST = "ERROR: Previous transaction is not correct"
+	ErrorPreviousTransactionNotExist = "ERROR: Previous transaction is not correct"
 )
 
 type Transaction struct {
@@ -87,7 +87,7 @@ func (tx *Transaction) Sign(privateKey ecdsa.PrivateKey, previousTXs map[string]
 
 	for _, in := range tx.Inputs {
 		if previousTXs[hex.EncodeToString(in.ID)].ID == nil {
-			log.Panic(ERROR_PREVIOUS_TRANSACTION_NOT_EXIST)
+			log.Panic(ErrorPreviousTransactionNotExist)
 		}
 	}
 
@@ -132,7 +132,7 @@ func (tx *Transaction) Verify(previousTXs map[string]Transaction) bool {
 
 	for _, in := range tx.Inputs {
 		if previousTXs[hex.EncodeToString(in.ID)].ID == nil {
-			log.Panic(ERROR_PREVIOUS_TRANSACTION_NOT_EXIST)
+			log.Panic(ErrorPreviousTransactionNotExist)
 		}
 	}
 
@@ -189,7 +189,7 @@ func (tx Transaction) String() string {
 	return strings.Join(lines, "\n")
 }
 
-func NewTransaction(from, to string, amount int, chain *BlockChain) *Transaction {
+func NewTransaction(from, to string, amount int, UTXO *UTXOSet) *Transaction {
 	var inputs []TxInput
 	var outputs []TxOutput
 
@@ -200,7 +200,7 @@ func NewTransaction(from, to string, amount int, chain *BlockChain) *Transaction
 	w := wallets.GetWallet(from)
 	pubKeyHash := wallet.PublicKeyHash(w.PublicKey)
 
-	accumulator, validOutputs := chain.FindSpendableOutputs(pubKeyHash, amount)
+	accumulator, validOutputs := UTXO.FindSpendableOutputs(pubKeyHash, amount)
 
 	if accumulator < amount {
 		log.Panic("Error: not enough funds")
@@ -225,7 +225,7 @@ func NewTransaction(from, to string, amount int, chain *BlockChain) *Transaction
 
 	tx := Transaction{nil, inputs, outputs}
 	tx.ID = tx.Hash()
-	chain.SignTransaction(&tx, w.PrivateKey)
+	UTXO.BlockChain.SignTransaction(&tx, w.PrivateKey)
 
 	return &tx
 }

@@ -198,6 +198,51 @@ Balance of 18cpTLjwkBMjVmatvTTuGUMfJFTNHRX4FS: 30
 Balance of 1DDUHF6ZhFCFH8V6e8wjWd7mtAXZVncKDc: 70
 ```
 
+# Part 7
+
+Adding Unspent Transaction Outputs Set
+
+- Searching through all transactions to find one is inefficient
+
+- Bitcoin's blocks takes up 200 GB
+
+- Solution is to index the unspent transaction outputs, and search them for
+specific things
+
+    - Unspent Outputs are important, because they can tell how much a user has,
+    and how much coin they can actually move around
+    
+    - Utilizing the same database for the Blockchain
+    
+        - Creating another layer in it for the Unspent Transactions
+        
+        - BadgerDB does not have tables. Only way to separate data is by **Prefixes**
+        
+`go run main.go createwallet`
+
+```
+New address is: 186FcUiLto18VrSDjm388M2vG22cxdF7Gq
+```
+
+`go run main.go createwallet`
+
+```
+New address is: 1M7cJeHzD9w1i4mLYLr82rCxDrNeqYGT6k
+```
+
+`go run main.go createblockchain -address 186FcUiLto18VrSDjm388M2vG22cxdF7Gq`
+
+```
+000bb2892af7423316a1c270364f84a098d9e4f4659669ed6796e8de77e3f02d
+Genesis Created
+```
+
+`go run main.go getbalance -address 186FcUiLto18VrSDjm388M2vG22cxdF7Gq`
+
+```
+Balance of 186FcUiLto18VrSDjm388M2vG22cxdF7Gq: 100
+```
+
 # After Tutorial Refactor
 
 Refactor the Network Module
