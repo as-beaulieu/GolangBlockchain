@@ -247,6 +247,50 @@ Balance of 186FcUiLto18VrSDjm388M2vG22cxdF7Gq: 100
 
 Adding Merkle Tree
 
+`go run main.go createwallet`
+
+```
+New address is: 1HTmqvn7uErYEU5GgbPc3kTiny6Ei6dTJZ
+```
+
+`go run main.go createwallet`
+
+```
+New address is: 1GVXpGJv4vUEyKiKFmvRLZdeyyyErW64e7
+```
+
+`go run main.go createblockchain -address 1HTmqvn7uErYEU5GgbPc3kTiny6Ei6dTJZ`
+
+```
+000e514186a56915b295957d83c3a4e9e4fa323e226f3d4403a96035e2e8d533
+Genesis Created
+```
+
+`go run main.go printchain`
+
+```
+previous hash: 
+data in block: 000e514186a56915b295957d83c3a4e9e4fa323e226f3d4403a96035e2e8d533
+PoW: true
+--- Transaction :
+        Input 0:
+                TXID:   
+                Out:    -1
+                Signature:      
+                PubKey:         4669727374205472616e73616374696f6e2066726f6d2047656e65736973
+        Output 0
+                Value: 20
+                Script: b49242d5e300595599fda475fa6bd816ced17cf8
+```
+
+`go run main.go reindexutxo`
+
+```
+DONE! There are 1 transactions in the UTXO set.
+```
+
+`go run main.go send -to 1GVXpGJv4vUEyKiKFmvRLZdeyyyErW64e7 -from 1HTmqvn7uErYEU5GgbPc3kTiny6Ei6dTJZ -amount 5`
+
 # After Tutorial Refactor
 
 Refactor the Network Module
