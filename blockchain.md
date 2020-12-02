@@ -264,5 +264,43 @@ A wallet is made up of 2 keys: Private and Public Keys
 
 ## Merkel Tree
 
+A Merkel Tree is another optimization method much like the UTXO Set
 
+Because Bitcoin is decentralized, every node must have its own independent and 
+self sufficient node which will store a copy of the blockchain
 
+- Now a node of Bitcoin is about 200 GB
+
+There needs to be a way to verify a block transaction without downloading the block
+itself.
+
+Merkel Trees obtain transaction hashes, saved in a block header, 
+considered by the proof of work system
+
+```
+                                        Merkle Root
+                                     /               \
+                                    /                 \
+                Sha256 Branch A + B                      Sha256 Branch C + D
+                /           \                               /               \
+               /             \                             /                 \
+    Branch A: sha256 tx1    Branch B: sha256 tx2    Branch C: sha256 tx3      Branch D: sha256 tx4
+            |                       |                        |                        |
+            |                       |       Merkle Tree      |                        |
+    --------------------------------------------------------------------------------------------------
+            |                       |Serialized Transactions |                        |
+            |                       |                        |                        |
+        Transaction One        Transaction Two       Transaction Three          Transaction Four                   
+```
+
+At each level, the parent of the two leaves below it is the combined hash of its children
+- Branch A is a sha256 hash of the transaction
+- Branch A + B is the sha256 hash of the two hashes of Branch A and Branch B
+- The Merkle Root is the hash of Branch A + B and Branch C + D
+
+One rule of a Merkel Tree is that the leaves of the tree must be even
+
+- If there was no Transaction 4, then Branch D is just another hash of Transaction Three
+- Branch C + D is basically the Hash of Transaction 3 + Hash of Transaction 3
+
+The benefit of a Merkle Tree is that you can look at the Merkle Root to see if a block is inside of the tree

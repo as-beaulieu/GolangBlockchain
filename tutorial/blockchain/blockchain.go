@@ -269,6 +269,10 @@ func (chain *BlockChain) SignTransaction(tx *Transaction, privateKey ecdsa.Priva
 }
 
 func (chain *BlockChain) VerifyTransaction(tx *Transaction) bool {
+	if tx.IsCoinbase() {
+		return true
+	}
+
 	previousTXs := make(map[string]Transaction)
 
 	for _, in := range tx.Inputs {
