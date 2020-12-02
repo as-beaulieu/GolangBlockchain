@@ -295,6 +295,7 @@ considered by the proof of work system
 
 At each level, the parent of the two leaves below it is the combined hash of its children
 - Branch A is a sha256 hash of the transaction
+    - The lowest parts of the tree essentially have its children leaves set to nil
 - Branch A + B is the sha256 hash of the two hashes of Branch A and Branch B
 - The Merkle Root is the hash of Branch A + B and Branch C + D
 

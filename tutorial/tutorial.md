@@ -243,6 +243,10 @@ Genesis Created
 Balance of 186FcUiLto18VrSDjm388M2vG22cxdF7Gq: 100
 ```
 
+# Part 8
+
+Adding Merkle Tree
+
 # After Tutorial Refactor
 
 Refactor the Network Module

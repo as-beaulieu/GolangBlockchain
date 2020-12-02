@@ -29,3 +29,29 @@ func NewMerkleNode(left, right *MerkleNode, data []byte) *MerkleNode {
 
 	return &node
 }
+
+func NewMerkleTree(data [][]byte) *MerkleTree {
+	var nodes []MerkleNode
+
+	if len(data)%2 != 0 {
+		data = append(data, data[len(data)-1])
+	}
+
+	for _, dat := range data {
+		node := NewMerkleNode(nil, nil, dat)
+		nodes = append(nodes, *node)
+	}
+
+	for i := 0; i < len(data)/2; i++ {
+		var level []MerkleNode
+
+		for j := 0; j < len(nodes); j += 2 {
+			node := NewMerkleNode(&nodes[j], &nodes[j+1], nil)
+			level = append(level, *node)
+		}
+
+		nodes = level
+	}
+
+	return &MerkleTree{&nodes[0]}
+}
